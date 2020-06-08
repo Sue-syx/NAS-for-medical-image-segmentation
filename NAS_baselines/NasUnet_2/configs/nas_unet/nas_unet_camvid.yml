@@ -1,0 +1,61 @@
+model:
+    arch: nas-unet
+data:
+    dataset: camvid
+    train_split: train_aug
+    split: val
+    img_rows: 'same'
+    img_cols: 'same'
+searching:
+    init_channels: 16
+    depth: 4
+    epoch: 300
+    batch_size: 6
+    report_freq: 20
+    n_workers: 2
+    alpha_begin: 10
+    max_patience: 40
+    gpu: True
+    multi_gpus: True
+    sharing_normal: True
+    double_down_channel: False
+    meta_node_num: 3
+    grad_clip: 5
+    train_portion: 0.5
+    model_optimizer:
+        name: 'sgd'
+        lr: 0.025
+        weight_decay: 5.0e-4
+    arch_optimizer:
+        name: 'adam'
+        lr: 3.0e-4
+        weight_decay: 5.0e-3
+    loss:
+        name: 'cross_entropy'
+        size_average: False
+        aux_weight:
+    resume:
+training:
+    geno_type: NAS_UNET_NEW_V1
+    init_channels: 64
+    depth: 6
+    epoch: 800
+    batch_size: 10
+    report_freq: 20
+    n_workers: 4
+    multi_gpus: False
+    double_down_channel: False
+    grad_clip: False
+    max_patience: 80
+    model_optimizer:
+        name: 'adabound'
+        lr: 1.0e-3
+        weight_decay: 5.0e-4
+    loss:
+        name: 'cross_entropy'
+        aux_weight: 0
+    backbone:
+    lr_schedule:
+        name: 'cos'
+        T_max: 100
+    resume:

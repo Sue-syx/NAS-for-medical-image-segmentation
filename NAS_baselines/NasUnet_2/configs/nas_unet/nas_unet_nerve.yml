@@ -1,0 +1,61 @@
+model:
+    arch: nas-unet
+data:
+    dataset: ultrasound_nerve
+    train_split: train_aug
+    split: val
+    img_rows: 'same'
+    img_cols: 'same'
+searching:
+    init_channels: 16
+    depth: 4
+    epoch: 300
+    batch_size: 6
+    report_freq: 20
+    n_workers: 2
+    alpha_begin: 10
+    max_patience: 40
+    gpu: True
+    multi_gpus: True
+    sharing_normal: True
+    double_down_channel: False
+    meta_node_num: 3
+    grad_clip: 5
+    train_portion: 0.5
+    model_optimizer:
+        name: 'adabound'
+        lr: 1.0e-3
+        weight_decay: 5.0e-4
+    arch_optimizer:
+        name: 'adam'
+        lr: 3.0e-4
+        weight_decay: 5.0e-3
+    loss:
+        name: 'dice_loss'
+        size_average: False
+        aux_weight:
+    resume:
+training:
+    geno_type: NAS_UNET_V3
+    init_channels: 48
+    depth: 6
+    epoch: 400
+    batch_size: 10
+    report_freq: 10
+    n_workers: 4
+    multi_gpus: False
+    double_down_channel: False
+    grad_clip: 5
+    max_patience: 50
+    model_optimizer:
+        name: 'adabound'
+        lr: 1.0e-3
+        weight_decay: 5.0e-4
+    loss:
+        name: 'cross_entropy_with_dice'
+        aux_weight: 0.2
+    backbone:
+    lr_schedule:
+        name: 'exp_lr'
+        gamma: 0.995
+    resume:
